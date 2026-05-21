@@ -18,7 +18,7 @@ class generator;
   task gen();
     begin
       
-      forever begin
+      repeat(150) begin
         
         t=new();
         if (!t.randomize()) begin
