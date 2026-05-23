@@ -27,7 +27,7 @@ class reference;
           
           mem[t.addr_a]<=t.data_a;
           $display("+-------- Data-1 Written successfully ------------+");
-          
+          total++;
         end
         
         else begin
@@ -46,6 +46,7 @@ class reference;
          
          mem[t.addr_b]<=t.data_b;
          $display("+-------- Data-2 Written successfully ------------+");
+          total++;
          
         end
         
