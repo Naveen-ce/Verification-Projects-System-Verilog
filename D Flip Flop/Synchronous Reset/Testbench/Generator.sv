@@ -2,7 +2,6 @@
 class generator;
   
   transaction t;
-  transaction t1;
   
   mailbox g_to_dr;
   
