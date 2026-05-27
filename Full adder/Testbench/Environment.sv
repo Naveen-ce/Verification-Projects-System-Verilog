@@ -49,7 +49,26 @@ class environment;
           m.mon();
           r.rf();
           s.sc();
-        join
-      endtask
+        join_any
+        #0;
+        
+        disable fork;
+          
+          pr=(s.pass/s.total)*100;
+          
+          $display("+------------------------------------------------+");
+          $display("|        TOTAL NUMBER OF TEST CASES =%2d          |",s.total);
+          $display("|------------------------------------------------|");
+          $display("|          PASS           |          FAIL        |");
+          $display("|                         |                      |");
+          $display("|          %3d            |          %3d         |",s.pass,s.fail);
+          $display("|                         |                      |");
+          $display("|------------------------------------------------|");
+          $display("              SUCCESS RATE = %0f                   ",pr);
+          $display("|------------------------------------------------|");
+          
+          #1; 
+          
+          endtask
   
 endclass:environment
