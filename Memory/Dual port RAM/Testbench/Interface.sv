@@ -19,14 +19,14 @@ interface ram_itf(input clk);
   endclocking
   
   clocking mon_clk @(posedge clk);
-    default input #0 output #0;
+    default input #1step output #0;
     
     input data_a,data_b,addr_a,addr_b,w_a,w_b,data_out_a,data_out_b;
     
   endclocking
   
  
-  
+  modport dut(input clk,input data_a,data_b,addr_a,addr_b,w_a,w_b,output data_out_a,output data_out_b);
   modport mon(input clk,clocking mon_clk);
   modport dri(input clk,clocking dri_clk);
   

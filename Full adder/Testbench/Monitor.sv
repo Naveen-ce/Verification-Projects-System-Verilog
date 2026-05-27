@@ -16,7 +16,7 @@ class monitor;
   task mon();
     begin
       
-      repeat (20) begin
+      forever begin
         
         t=new();
         
@@ -30,6 +30,8 @@ class monitor;
         
         m_to_sc.put(t);
         
+        $display("|  [Time=%0t] MONITOR -----> A =%b | B =%b | CIN= %b | SUM =%b | CARRY =%b |",$time,t.a,t.b,t.cin,t.sum,t.carry);
+         $display("");
         #1;
         
       end

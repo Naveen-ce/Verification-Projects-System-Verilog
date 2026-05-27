@@ -7,8 +7,5 @@ class transaction;
   bit sum;
   bit carry;
   
-  function void display();
-    $display("A=%b | B=%b | Cin=%b",a,b,cin);
-  endfunction
   
 endclass:transaction

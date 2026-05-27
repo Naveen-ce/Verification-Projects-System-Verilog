@@ -10,12 +10,7 @@ module tb_top;
 
   dff_itf intf(clk);
 
-  d_ff dut (
-    .clk(clk),
-    .rst(intf.rst),
-    .d(intf.d),
-    .q(intf.q)
-  );
+  d_ff dut (intf.dut);
 
 
   environment env;

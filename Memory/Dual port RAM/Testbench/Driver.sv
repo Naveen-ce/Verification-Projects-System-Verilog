@@ -20,7 +20,6 @@ class driver;
       
       forever begin
          
-        t=new();
         g_to_dr.get(t);
         
         @(vif.dri_clk)

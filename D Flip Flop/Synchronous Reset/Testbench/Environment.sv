@@ -18,6 +18,8 @@ class environment;
   
   event done;
   
+  real pr;
+  
   function new( virtual dff_itf.mon vif_mon,virtual dff_itf.dri vif_dri);
     
     this.vif_dri=vif_dri;
@@ -41,7 +43,26 @@ class environment;
           d.dr();
           m.mon();
           s.sc();
-        join
+        join_any
+        #0;
+        disable fork;
+        
+        
+        pr=(s.pass/s.total)*100;
+          
+          $display("+------------------------------------------------+");
+          $display("|        TOTAL NUMBER OF TEST CASES =%2d          |",s.total);
+          $display("|------------------------------------------------|");
+          $display("|          PASS           |          FAIL        |");
+          $display("|                         |                      |");
+          $display("|          %3d            |          %3d         |",s.pass,s.fail);
+          $display("|                         |                      |");
+          $display("|------------------------------------------------|");
+          $display("              SUCCESS RATE = %0f                   ",pr);
+          $display("|------------------------------------------------|");
+          
+          #1; 
+        
       endtask
   
 endclass:environment

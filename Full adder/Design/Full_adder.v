@@ -1,8 +1,6 @@
-module full_adder(
-  input a,b,cin,
-  output sum,carry);
+module full_adder(add_itf vif);
   
-  assign sum=a^b^cin;
-  assign carry=(a&b)|(a&cin)|(b&cin);
+  assign vif.sum=vif.a^vif.b^vif.cin;
+  assign vif.carry=(vif.a&vif.b)|(vif.a&vif.cin)|(vif.b&vif.cin);
   
 endmodule

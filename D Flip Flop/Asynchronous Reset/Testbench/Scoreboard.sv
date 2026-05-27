@@ -11,7 +11,8 @@ class scoreboard;
   endfunction
   
   
-  reg expected;
+  bit expected;
+  int total,pass,fail;
   
   task sc();
     begin
@@ -22,30 +23,22 @@ class scoreboard;
         
         m_to_sc.get(t);
         
-        if(t.rst)
+        if(t.rst) begin
           expected=1'b0;
-        else
+          total++;
+        end
+        
+        else begin
           expected=t.d;
+          total++;
+        end
         
         
-        $display("+---------------------------------------------------------+");
+        $display("+=========================================================+");
         $display("|                                                         |");
         $display("|                     DATA EVALUATION                     |");
-        $display("+---------------------------------------------------------+");
-        
-        $display(" rst=%b | D=%b", t.rst, t.d);
-                 
+        $display("+=========================================================+");
        
-                 
-        $display("|-----Actual output-----|");
-        $display("|           %b           |",t.q);
-        $display("|-----------------------|");
-        
-        
-        $display("|----Expected output----|");
-        $display("|           %b           |",expected);
-        $display("|-----------------------|");
-        
         $display("");
                  
                 
@@ -58,14 +51,15 @@ class scoreboard;
                  
                  
           $display("+---------------------------------------------------------+");
-          $display("| Actual Output              x             Expected Output|");
+          $display("|   Actual Output            x         Expected Output    |");
           $display("|                            x                            |");
-          $display("|       %b                    x                   %b        | ",t.d,expected);
+          $display("|        %b                   x               %b            | ",t.q,expected);
           $display("|                            x                            |");            
           $display("+---------------------------------------------------------+");
           $display("");
           $display("---------------------xxxxxxxxxxxxxxxxxxxxx-------------------------");
           $display("");
+          pass++;
           
                  end
                          
@@ -77,18 +71,20 @@ class scoreboard;
                  $display("+------------------------------------------------------------+");
                  
                  $display("+---------------------------------------------------------+");
-          $display("| Actual Output              x             Expected Output|");
-          $display("|                            x                            |");
-                 $display("|       %b                    x                   %b        | ",t.d,expected);
+                 $display("|   Actual Output            x         Expected Output   |");
+                 $display("|                            x                            |");
+                 $display("|       %b                    x                  %b         | ",t.q,expected);
           $display("|                            x                            |");            
           $display("+---------------------------------------------------------+");
           $display("");
           $display("---------------------xxxxxxxxxxxxxxxxxxxxx-------------------------");
           $display("");
+                 fail++;
                end
                          
+                      
+        
                          
-                         #10;
                          end
                          end
                          endtask

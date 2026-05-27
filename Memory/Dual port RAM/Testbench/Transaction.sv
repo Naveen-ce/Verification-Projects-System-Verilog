@@ -16,8 +16,8 @@ class transaction;
                  addr_a!=addr_b;
                }
   
-  constraint c2{ addr_a inside {[0:30]};
-                 addr_b inside {[31:63]};
+  constraint c2{ addr_a inside {[0:10]};
+                addr_b inside {[11:20]};
                  if(w_a==0) data_a==0;
                  if(w_b==0) data_b==0;
                }
@@ -26,8 +26,5 @@ class transaction;
                  w_b dist{1:=15,0:=15};
                }
   
-  function void display();
-    $display("DATA_A=%d | DATA_B=%d | ADDR_A=%d | ADDR_B=%d | WRITE_ENABLE_A=%b | WRITE_ENABLE_B=%b",data_a,data_b,addr_a,addr_b,w_a,w_b);
-  endfunction
   
 endclass:transaction

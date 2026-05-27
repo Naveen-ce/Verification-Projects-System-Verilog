@@ -30,8 +30,10 @@ class monitor;
         #1;
         t.q=vif.q;
        
-        
         m_to_sc.put(t);
+        
+        $display("|[Time=%0t] MONITOR -----> RST =%b | D =%b | Q =%b",$time,t.rst,t.d,t.q);
+        
         
       end
     end

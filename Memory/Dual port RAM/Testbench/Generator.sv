@@ -26,6 +26,8 @@ class generator;
   end
        
         g_to_dr.put(t);
+        
+        $display("| GENERATOR -----> DATA_A =%d | DATA_B =%d | ADDR_A =%d | ADDR_B =%d | WRITE_ENABLE_A =%b | WRITE_ENABLE_B =%b |",t.data_a,t.data_b,t.addr_a,t.addr_b,t.w_a,t.w_b);
        
         
         @(done);

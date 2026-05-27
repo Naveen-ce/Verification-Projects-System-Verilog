@@ -20,7 +20,6 @@ class driver;
       
       forever begin
          
-        t=new();
         g_to_dr.get(t);
         
         @(vif.dri_clk)
@@ -29,6 +28,9 @@ class driver;
         vif.dri_clk.rst<=t.rst;
         vif.dri_clk.d<=t.d;
         
+        $display("| [Time=%0t] DRIVER -----> RST =%b | D =%b |",$time,t.rst,t.d);
+       
+       
         #10;
         
         ->done;

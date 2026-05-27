@@ -5,8 +5,5 @@ class transaction;
   
   bit q;
   
-  function void display();
-    $display("RESET=%b | D=%b",rst,d);
-  endfunction
-  
+ 
 endclass:transaction

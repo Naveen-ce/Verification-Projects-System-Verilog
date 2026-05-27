@@ -10,18 +10,15 @@ module tb_top;
 
   dff_itf intf(clk);
 
-  d_ff dut (
-    .clk(clk),
-    .rst(intf.rst),
-    .d(intf.d),
-    .q(intf.q)
-  );
+  d_ff dut (intf.dut);
 
 
   environment env;
 
   initial begin
    
+    $dumpfile("v.vcd");
+    $dumpvars;
     env = new(intf.mon, intf.dri);
 
     env.run();

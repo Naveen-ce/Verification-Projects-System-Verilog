@@ -7,13 +7,7 @@ module tb_top;
 
   add_itf intf();
 
-  full_adder dut (
-    .a(intf.a),
-    .b(intf.b),
-    .cin(intf.cin),
-    .sum(intf.sum),
-    .carry(intf.carry)
-  );
+  full_adder dut (intf);
 
 
   environment env;

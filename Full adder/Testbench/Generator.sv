@@ -2,7 +2,6 @@
 class generator;
   
   transaction t;
-  transaction t1;
   
   mailbox g_to_dr;
   mailbox g_to_rf;
@@ -21,7 +20,7 @@ class generator;
   task gen();
     begin
       
-      repeat(20) begin
+      repeat(30) begin
         
         t=new();
         if (!t.randomize()) begin
@@ -31,6 +30,8 @@ class generator;
         g_to_dr.put(t);
         
         g_to_rf.put(t);
+        
+        $display("|  [Time=%0t] GENERATOR -----> A=%b | B=%b | Cin=%b |",$time, t.a, t.b, t.cin);
         
         @(done);
         

@@ -1,40 +1,72 @@
 class scoreboard;
   
   transaction t;
-  transaction t1;
  
   mailbox m_to_sc;
-  mailbox rf_to_sc;
   
-  function new(mailbox m_to_sc,mailbox rf_to_sc);
+  function new(mailbox m_to_sc);
     
     this.m_to_sc=m_to_sc;
-    this.rf_to_sc=rf_to_sc;
     
   endfunction
   
-  
- int pass,fail;
+ reg[7:0] mem [63:0];
+  bit [7:0] expected_a,expected_pr_a; 
+  bit [7:0] expected_b,expected_pr_b; 
+ int pass,fail,total;
   
   task sc();
     begin
       
       forever begin
         
-        t=new();
-        t1=new();
-        
         m_to_sc.get(t);
-        rf_to_sc.get(t1);
+        
+         if(t.w_a) begin
+          
+          mem[t.addr_a]=t.data_a;
+          $display("+-------- Data-1 Written successfully ------------+");
+          total++;
+        end
+        
+        else begin
+          
+        
+          expected_pr_a=mem[t.addr_a];
+          $display("+-------- Data-1 Read successfully ------------+");
+          total++;
+          
+        end
+        
+  
+
+        if(t.w_b && !(t.w_a && t.addr_a==t.addr_b)) 
+        begin
+         
+         mem[t.addr_b]=t.data_b;
+         $display("+-------- Data-2 Written successfully ------------+");
+          total++;
+         
+        end
+        
+        else if(!t.w_b) begin
+          
+          
+          expected_pr_b=mem[t.addr_b];
+          $display("+-------- Data-2 Read successfully ------------+");
+          $display("");
+          total++;
+          
+        end
         
         
-        $display("+---------------------------------------------------------+");
+        $display("+=========================================================+");
         $display("|                                                         |");
         $display("|                       SCORE BOARD                       |");
-        $display("+---------------------------------------------------------+");
+        $display("+=========================================================+");
           
                 
-        if(t.data_out_a==t1.data_out_a) begin
+        if(t.data_out_a==expected_a) begin
           pass++;
                   
           $display("+---------------------------------------------------------+");
@@ -47,7 +79,7 @@ class scoreboard;
           $display("+---------------------------------------------------------+");
           $display("|    Actual Output           x        Expected Output     |");
           $display("|                            x                            |");
-          $display("|         %3d                x              %3d           | ",t.data_out_a,t1.data_out_a);
+          $display("|         %3d                x              %3d           | ",t.data_out_a,expected_a);
           $display("|                            x                            |");            
           $display("+---------------------------------------------------------+");
           $display("");
@@ -67,7 +99,7 @@ class scoreboard;
                  $display("+---------------------------------------------------------+");
                  $display("|      Actual Output         x       Expected Output      |");
                  $display("|                            x                            |");
-                 $display("|           %3d              x              %3d           | ",t.data_out_a,t1.data_out_a);
+                 $display("|           %3d              x              %3d           | ",t.data_out_a,expected_a);
                  $display("|                            x                            |");            
                  $display("+---------------------------------------------------------+");
              
@@ -78,7 +110,7 @@ class scoreboard;
         
         
         
-        if(t.data_out_b==t1.data_out_b) begin
+        if(t.data_out_b==expected_b) begin
           pass++;
                   
           $display("+---------------------------------------------------------+");
@@ -91,11 +123,12 @@ class scoreboard;
           $display("+---------------------------------------------------------+");
           $display("|    Actual Output           x        Expected Output     |");
           $display("|                            x                            |");
-          $display("|         %3d                x              %3d           | ",t.data_out_b,t1.data_out_b);
+          $display("|         %3d                x              %3d           | ",t.data_out_b,expected_b);
           $display("|                            x                            |");            
           $display("+---------------------------------------------------------+");
           $display("");
-                    $display("---------------------xxxxxxxxxxxxxxxxxxxxx-------------------------");
+          $display("---------------------xxxxxxxxxxxxxxxxxxxxx-------------------------");
+          $display("---------------------xxxxxxxxxxxxxxxxxxxxx-------------------------");
 
           $display("");
           
@@ -113,14 +146,18 @@ class scoreboard;
                  $display("+---------------------------------------------------------+");
                  $display("|      Actual Output         x       Expected Output      |");
                  $display("|                            x                            |");
-                 $display("|            %3d             x              %3d           |",t.data_out_b,t1.data_out_b);
+                 $display("|            %3d             x              %3d           |",t.data_out_b,expected_b);
                  $display("|                            x                            |");            
                  $display("+---------------------------------------------------------+");
              
           $display("");
           $display("---------------------xxxxxxxxxxxxxxxxxxxxx-------------------------");
+             $display("---------------------xxxxxxxxxxxxxxxxxxxxx-------------------------");
           $display("");
                end
+        
+        expected_a=expected_pr_a;
+        expected_b=expected_pr_b;
                          
                          
                          #10;

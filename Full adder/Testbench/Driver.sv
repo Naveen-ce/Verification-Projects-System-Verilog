@@ -18,7 +18,7 @@ class driver;
   task dr();
     begin
       
-      repeat(20) begin
+      forever begin
          
         t=new();
         g_to_dr.get(t);
@@ -27,6 +27,9 @@ class driver;
         vif.a=t.a;
         vif.b=t.b;
         vif.cin=t.cin;
+        
+        $display("| [Time=%0t] DRIVER -----> A =%b | B =%b | CIN =%b |",$time,t.a,t.b,t.cin);
+        
         
         #10;
         

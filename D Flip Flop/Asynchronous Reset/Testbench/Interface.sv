@@ -13,16 +13,16 @@ interface dff_itf(input clk);
   endclocking
   
   clocking mon_clk @(posedge clk);
-    default input #0 output #0;
+    default input #1step output #0;
     
     input q,d;
     
   endclocking
   
  
-  
+  modport dut(input clk,input rst,d,output q);
   modport mon(input clk,input rst,q,d,clocking mon_clk);
-    modport dri(input clk,output rst,clocking dri_clk);
+  modport dri(input clk,output rst,clocking dri_clk);
   
     
 endinterface:dff_itf 

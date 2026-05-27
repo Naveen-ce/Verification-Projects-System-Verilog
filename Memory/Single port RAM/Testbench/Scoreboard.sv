@@ -1,40 +1,52 @@
 class scoreboard;
   
   transaction t;
-  transaction t1;
  
   mailbox m_to_sc;
-  mailbox rf_to_sc;
   
-  function new(mailbox m_to_sc,mailbox rf_to_sc);
+  function new(mailbox m_to_sc);
     
     this.m_to_sc=m_to_sc;
-    this.rf_to_sc=rf_to_sc;
     
   endfunction
   
+ reg[7:0] ram [63:0];
+  bit [7:0] expected,expected_pr;
   
- int pass,fail;
+ int pass,fail,total;
   
   task sc();
     begin
       
       forever begin
         
-        t=new();
-        t1=new();
-        
         m_to_sc.get(t);
-        rf_to_sc.get(t1);
+        
+         if(t.w_en) begin
+          
+          ram[t.addr]=t.data_in;
+          $display("+|-------------Data Written Successfully ---------------|+");
+          total++;
+          
+	    end
+	    else begin
+          
+          
+          expected_pr=ram[t.addr];
+          $display("+|-------------Data Read Successfully ---------------|+");
+          $display("");
+          total++;
+
+        end
         
         
-        $display("+---------------------------------------------------------+");
+        $display("+=========================================================+");
         $display("|                                                         |");
         $display("|                       SCORE BOARD                       |");
-        $display("+---------------------------------------------------------+");
+        $display("+=========================================================+");
           
                 
-        if(t.data_out==t1.data_out) begin
+        if(t.data_out==expected) begin
           pass++;
                   
           $display("+---------------------------------------------------------+");
@@ -47,7 +59,7 @@ class scoreboard;
           $display("+---------------------------------------------------------+");
           $display("|    Actual Output           x        Expected Output     |");
           $display("|                            x                            |");
-          $display("|         %3d                x              %3d           | ",t.data_out,t1.data_out);
+          $display("|         %3d                x              %3d           | ",t.data_out,expected);
           $display("|                            x                            |");            
           $display("+---------------------------------------------------------+");
           $display("");
@@ -69,7 +81,7 @@ class scoreboard;
                  $display("+---------------------------------------------------------+");
                  $display("|      Actual Output         x       Expected Output      |");
                  $display("|                            x                            |");
-                 $display("|           %3d              x              %3d           | ",t.data_out,t1.data_out);
+                 $display("|           %3d              x              %3d           | ",t.data_out,expected);
                  $display("|                            x                            |");            
                  $display("+---------------------------------------------------------+");
              
@@ -78,6 +90,8 @@ class scoreboard;
           $display("");
                end
                          
+        
+        expected=expected_pr;
                          
                          #10;
                          end

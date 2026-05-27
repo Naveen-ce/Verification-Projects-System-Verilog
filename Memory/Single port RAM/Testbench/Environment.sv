@@ -2,7 +2,6 @@
 `include "Driver.sv"
 `include "Monitor.sv"
 `include "Scoreboard.sv"
-`include "Reference.sv"
 
 class environment;
   
@@ -12,18 +11,15 @@ class environment;
   generator g;
   driver d;
   monitor m;
-  reference r;
   scoreboard s;
   
+  real pr;
   
   mailbox g_to_dr; //Generator to driver
-  mailbox m_to_rf; //Generator to reference
   mailbox m_to_sc; //Monitor to Scoreboard
-  mailbox rf_to_sc; //Reference to Scoreboard
+
   
   event done;
-  
-  real pr;
   
   function new( virtual ram_itf.mon vif_mon,virtual ram_itf.dri vif_dri);
     
@@ -32,15 +28,13 @@ class environment;
     
     
     g_to_dr=new();
-    m_to_rf=new();
     m_to_sc=new();
-    rf_to_sc=new();
+   
     
-    g=new(g_to_dr,done,60);
+    g=new(g_to_dr,done,30);
     d=new(g_to_dr,done,vif_dri);
-    m=new(m_to_sc,m_to_rf,vif_mon);
-    r=new(m_to_rf,rf_to_sc);
-    s=new(m_to_sc,rf_to_sc);
+    m=new(m_to_sc,vif_mon);
+    s=new(m_to_sc);
     
   endfunction
       
@@ -50,16 +44,16 @@ class environment;
           g.gen();
           d.dr();
           m.mon();
-          r.rf();
           s.sc();
-        join_any 
+        join_any
         #0;
+        
         disable fork;
           
-          pr=(s.pass/r.total)*100;
+          pr=(s.pass/s.total)*100;
           
           $display("+------------------------------------------------+");
-          $display("|        TOTAL NUMBER OF TEST CASES =%2d          |",r.total);
+          $display("|        TOTAL NUMBER OF TEST CASES =%2d          |",s.total);
           $display("|------------------------------------------------|");
           $display("|          PASS           |          FAIL        |");
           $display("|                         |                      |");
@@ -70,10 +64,8 @@ class environment;
           $display("|------------------------------------------------|");
           
           #1; 
-          
-          $finish;
+        
+        
       endtask
-    
-          
-          
+  
 endclass:environment

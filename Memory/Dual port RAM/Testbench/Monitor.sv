@@ -3,14 +3,12 @@ class monitor;
   transaction t;
   
   mailbox m_to_sc;
-  mailbox m_to_rf;
   
   virtual ram_itf.mon vif;
   
-  function new(mailbox m_to_sc,mailbox m_to_rf, virtual ram_itf.mon vif);
+  function new(mailbox m_to_sc,virtual ram_itf.mon vif);
     
     this.m_to_sc=m_to_sc;
-    this.m_to_rf=m_to_rf;
     this.vif=vif;
     
   endfunction
@@ -38,7 +36,6 @@ class monitor;
        
         
         m_to_sc.put(t);
-        m_to_rf.put(t);
         
           $display("");
         

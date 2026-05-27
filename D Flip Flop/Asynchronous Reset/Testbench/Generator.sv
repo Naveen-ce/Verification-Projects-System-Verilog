@@ -18,14 +18,16 @@ class generator;
   task gen();
     begin
       
-      forever begin
+      repeat(30) begin
         
         t=new();
         if (!t.randomize()) begin
     $error("GENERATOR: Randomization failed!");
   end
-       
+           
         g_to_dr.put(t);
+        
+        $display("| [Time=%0t] GENERATOR -----> RST =%b | D =%b |",$time,t.rst,t.d);
        
         
         @(done);

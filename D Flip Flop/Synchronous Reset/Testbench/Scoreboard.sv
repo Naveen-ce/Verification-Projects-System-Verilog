@@ -11,44 +11,33 @@ class scoreboard;
   endfunction
   
   
-  reg expected;
+  bit expected,expected_pr;
+  int total,pass,fail;
   
   task sc();
     begin
       
       forever begin
         
-        t=new();
-        
         m_to_sc.get(t);
         
-        if(t.rst)
-          expected=1'b0;
-        else
-          expected=t.d;
+        if(t.rst) begin
+          expected_pr=1'b0;
+          total++;
+        end
+        
+        else begin
+          expected_pr=t.d;
+          total++;
+        end
         
         
-        $display("+---------------------------------------------------------+");
+        $display("+=========================================================+");
         $display("|                                                         |");
         $display("|                     DATA EVALUATION                     |");
-        $display("+---------------------------------------------------------+");
+        $display("+=========================================================+");
         
-        $display(" rst=%b | D=%b", t.rst, t.d);
-                 
-       
-                 
-        $display("|-----Actual output-----|");
-        $display("|           %b           |",t.q);
-        $display("|-----------------------|");
-        
-        
-        $display("|----Expected output----|");
-        $display("|           %b           |",expected);
-        $display("|-----------------------|");
-        
-        $display("");
-                 
-                
+               
         if(t.q==expected) begin
                   
           $display("+---------------------------------------------------------+");
@@ -58,14 +47,16 @@ class scoreboard;
                  
                  
           $display("+---------------------------------------------------------+");
-          $display("| Actual Output              x             Expected Output|");
+          $display("|      Actual Output         x       Expected Output      |");
           $display("|                            x                            |");
-          $display("|       %b                    x                   %b        | ",t.d,expected);
+          $display("|            %b               x              %b             |",t.q,expected);
           $display("|                            x                            |");            
           $display("+---------------------------------------------------------+");
           $display("");
           $display("---------------------xxxxxxxxxxxxxxxxxxxxx-------------------------");
+           $display("---------------------xxxxxxxxxxxxxxxxxxxxx-------------------------");
           $display("");
+          pass++;
           
                  end
                          
@@ -76,17 +67,18 @@ class scoreboard;
                  $display("|                            FAIL                            |");
                  $display("+------------------------------------------------------------+");
                  
-                 $display("+---------------------------------------------------------+");
-          $display("| Actual Output              x             Expected Output|");
-          $display("|                            x                            |");
-                 $display("|       %b                    x                   %b        | ",t.d,expected);
+          $display("+---------------------------------------------------------+");
+          $display("|     Actual Output              x     Expected Output  |");
+          $display("|                            x                          |");
+                 $display("|          %b                    x            %b         | ",t.q,expected);
           $display("|                            x                            |");            
           $display("+---------------------------------------------------------+");
           $display("");
           $display("---------------------xxxxxxxxxxxxxxxxxxxxx-------------------------");
           $display("");
+                 fail++;
                end
-                         
+                         expected=expected_pr;
                          
                          #10;
                          end

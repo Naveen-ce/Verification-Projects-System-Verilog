@@ -10,13 +10,7 @@ module tb_top;
 
   ram_itf intf(clk);
 
-  single_port dut (
-    .clk(clk),
-    .data_in(intf.data_in),
-    .addr(intf.addr),
-    .w_en(intf.w_en),
-    .data_out(intf.data_out)
-  );
+  single_port dut (intf.dut);
 
 
   environment env;

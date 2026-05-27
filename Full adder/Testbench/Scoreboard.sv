@@ -6,6 +6,8 @@ class scoreboard;
   mailbox rf_to_sc;
   mailbox m_to_sc;
   
+  int pass,fail;
+  
   function new(mailbox rf_to_sc,mailbox m_to_sc);
     
     this.rf_to_sc=rf_to_sc;
@@ -17,7 +19,7 @@ class scoreboard;
   task sc();
     begin
       
-      repeat(20) begin
+      forever begin
         
         t=new();
         t1=new();
@@ -25,29 +27,22 @@ class scoreboard;
         rf_to_sc.get(t);
         m_to_sc.get(t1);
         
-        $display("+---------------------------------------------------------+");
+        $display("+=========================================================+");
         $display("|                                                         |");
         $display("|                     DATA EVALUATION                     |");
-        $display("+---------------------------------------------------------+");
+        $display("+=========================================================+");
+         $display("");         
         
-        $display(" A=%b | B=%b | Cin=%b", t.a, t.b, t.cin);
-                 
-        $display("Expected Sum=%d | Expected Carry=%d",t.sum,t.carry);
-                 
-         $display("Actual Sum=%d | Actual Carry=%d",t1.sum,t1.carry);
-        
-        $display("");
-                 
                 
         if((t1.sum==t.sum) && (t1.carry==t.carry)) begin
                   
           $display("+---------------------------------------------------------+");
           $display("|                                                         |");
-          $display("|                           PASS                          |");
+          $display("|                          PASS                           |");
           $display("+---------------------------------------------------------+");
                  
                  
-   $display("+---------------------------------------------------------+");
+          $display("+----------------------------------------------------------+");
    $display("| Actual Sum | Actual Carry x  Expected Sum |Expected Carry|");
    $display("|            |              x               |              |");
           $display("|    %d       |     %d        x       %d       |     %d        | ",t1.sum,t1.carry,t.sum,t.carry);
@@ -55,7 +50,10 @@ class scoreboard;
    $display("+-----------------------------------------------------------+");
           $display("");
           $display("---------------------xxxxxxxxxxxxxxxxxxxxx-------------------------");
+          $display("---------------------xxxxxxxxxxxxxxxxxxxxx-------------------------");
           $display("");
+          
+          pass++;
           
                  end
                          
@@ -76,7 +74,9 @@ class scoreboard;
                  $display("");
                  
                  $display("---------------------xxxxxxxxxxxxxxxxxxxxx-------------------------");
+                  $display("---------------------xxxxxxxxxxxxxxxxxxxxx-------------------------");
                  $display("");
+                 fail++;
                end
                          
                          

@@ -1,10 +1,9 @@
-module d_ff(
-input clk,rst,d,
-output reg q);
-always@(posedge clk)begin
-if(rst)
-q<=1'b0;
+module d_ff(dff_itf.dut vif);
+  
+  always@(posedge vif.clk or posedge vif.rst)begin
+    if(vif.rst)
+vif.q<=1'b0;
 else
-q<=d;
+vif.q<=vif.d;
 end
 endmodule
